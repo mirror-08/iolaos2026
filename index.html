@@ -408,13 +408,20 @@
     <div id="home-upcoming"></div>
   </div>
   <div class="card">
-    <div class="card-title">🎟 쿠폰 현황</div>
+    <div class="flex-between" style="margin-bottom:10px;">
+      <div class="card-title" style="margin:0;">🎟 쿠폰 현황</div>
+      <button class="btn btn-primary btn-sm" onclick="openAddCouponManual()">+ 할인권 추가/차감</button>
+    </div>
     <div id="home-coupons"></div>
   </div>
   <div class="card">
-    <div class="card-title">🎭 테베 시민증 현황</div>
+    <div class="flex-between" style="margin-bottom:4px;">
+      <div class="card-title" style="margin:0;">🎭 테베 시민증 현황</div>
+      <button class="btn btn-outline btn-sm" onclick="openAddStampBoard()" style="white-space:nowrap;font-size:11px;">+ 새 테베 시민증</button>
+    </div>
+    <div style="font-size:10px;color:var(--text3);margin-bottom:6px;">3회차 : 40%+50% 할인권 &nbsp;·&nbsp; 6회차 : 폴라로이드</div>
     <div id="home-stamps-wrap">
-      <div id="home-stamps" style="margin-top:8px;"></div>
+      <div id="home-stamps" style="margin-top:4px;"></div>
     </div>
   </div>
   <div class="card">
@@ -479,10 +486,7 @@
 
   <!-- 쿠폰 현황 -->
   <div class="card" style="margin-bottom:16px;">
-    <div class="flex-between" style="margin-bottom:12px;">
-      <div class="card-title" style="margin:0;">쿠폰 현황</div>
-      <button class="btn btn-primary btn-sm" onclick="openAddCouponManual()">+ 할인권 추가/차감</button>
-    </div>
+    <div class="card-title" style="margin-bottom:10px;">쿠폰 현황</div>
     <div id="coupon-list"></div>
     <div style="margin-top:8px;font-size:11px;color:var(--text3);text-align:center;">할인권 증정 및 사용 기간: 2026.06.21 ~ 2026.07.12</div>
   </div>
@@ -498,15 +502,6 @@
     </div>
   </div>
 
-  <!-- 다관람 카드 -->
-  <div style="margin-bottom:8px;">
-    <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
-      <div style="font-size:12px;font-weight:700;color:var(--text2);white-space:nowrap;">🎭 테베 시민증</div>
-      <button class="btn btn-outline btn-sm" onclick="openAddStampBoard()" style="white-space:nowrap;font-size:11px;">+ 새 카드</button>
-    </div>
-    <div style="font-size:10px;color:var(--text3);">3회차 : 40%+50% 할인권 &nbsp;·&nbsp; 6회차 : 폴라로이드</div>
-  </div>
-  <div id="stamp-boards-list" style="margin-bottom:16px;"></div>
 </div>
 
 <!-- ========== STATS ========== -->
@@ -873,6 +868,18 @@
       <input type="text" class="form-control" id="stamp-comment" placeholder="메모">
     </div>
     <button class="btn btn-primary" style="width:100%;margin-top:8px;" onclick="addStamp()">도장 찍기</button>
+  </div>
+</div>
+
+<!-- ===== COUPON DETAIL PANEL ===== -->
+<div class="overlay" id="overlay-coupon-detail">
+  <div class="panel">
+    <div class="panel-handle"></div>
+    <div class="flex-between" style="margin-bottom:16px;">
+      <div class="panel-title" id="coupon-detail-title">할인권 상세 기록</div>
+      <button class="btn-icon" onclick="closePanel('overlay-coupon-detail')">✕</button>
+    </div>
+    <div id="coupon-detail-content"></div>
   </div>
 </div>
 
@@ -1516,47 +1523,9 @@ function renderHome() {
     upcomingCard.style.display = 'none';
   }
 
-  // ③ 도장판 (슬라이드 카드)
+  // ③ 도장판
   const boards = getStampBoards();
-  if (boards.length === 0) {
-    document.getElementById('home-stamps').innerHTML =
-      `<div style="color:var(--text3);font-size:13px;text-align:center;padding:8px;">도장판이 없습니다</div>`;
-  } else {
-    const slides = boards.map(b => {
-      const { cur, final } = calcStampCounts(b);
-      const total = b.totalSlots || 6;
-      const done  = cur >= total;
-      let dots = '';
-      for (let i = 1; i <= total; i++) {
-        const filled    = i <= cur;
-        const scheduled = i > cur && i <= final;
-        const ms = (b.milestones||[]).find(m => m.at === i);
-        const msLabel = ms ? (i === 3 ? '할인' : i === 6 ? '사진' : '') : '';
-        dots += `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-          <div style="width:36px;height:36px;border-radius:50%;
-            background:${filled ? 'transparent' : scheduled ? 'rgba(26,95,255,0.08)' : 'var(--bg3)'};
-            border:2px solid ${filled ? 'var(--accent)' : scheduled ? 'var(--accent)' : 'var(--border)'};
-            display:flex;align-items:center;justify-content:center;font-size:18px;">
-            ${filled ? '🎭' : ''}
-          </div>
-          <div style="font-size:8px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};">${msLabel||'.'}</div>
-        </div>`;
-      }
-      const cardStyle = boards.length === 1
-        ? 'width:100%;'
-        : 'min-width:100%;scroll-snap-align:start;flex-shrink:0;';
-      return `<div style="${cardStyle}box-sizing:border-box;background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 12px;">
-        <div style="font-size:13px;font-weight:700;color:var(--text1);margin-bottom:12px;">[🎭 ${b.name}]${done?' 🎉':''}</div>
-        <div style="display:flex;gap:6px;justify-content:center;margin-bottom:4px;">${dots}</div>
-        <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:4px;">현재 ${cur}칸 · 예정 ${final}칸</div>
-      </div>`;
-    }).join('');
-    const wrapStyle = boards.length === 1
-      ? ''
-      : 'overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;display:flex;-webkit-overflow-scrolling:touch;padding:2px 0 6px;';
-    document.getElementById('home-stamps').innerHTML =
-      `<div style="${wrapStyle}">${slides}</div>`;
-  }
+  renderStampBoards();
 
   // ④ 쿠폰
   const coupons = getCoupons();
@@ -1590,7 +1559,7 @@ function renderHome() {
         + boards.reduce((s,b)=>s+(b.milestones||[]).filter(m=>m.couponKey===item.key&&m.notified).reduce((t,m)=>t+(m.qty||1),0),0);
       const used   = records.filter(r=>(DISCOUNT_COUPON_MAP[r.discountType]||null)===item.key).length
         + (coupons[item.key].history||[]).filter(h=>h.type==='사용').reduce((s,h)=>s+(h.qty||1),0);
-      return `<div class="coupon-card">
+      return `<div class="coupon-card" onclick="openCouponDetail('${item.key}')" style="cursor:pointer;">
         <div class="coupon-card-label">${item.label}</div>
         <div class="coupon-card-sub-row">
           <div class="coupon-card-sub">현재</div>
@@ -2068,7 +2037,7 @@ const ACTOR_ROLES = [
 // ============================================================
 // COUPON / STAMP
 // ============================================================
-function renderCoupon() { renderStampBoards(); renderCouponList(); }
+function renderCoupon() { renderCouponList(); }
 
 function calcStampCounts(b) {
   // 현재: 오늘 날짜까지 찍힌 도장 수
@@ -2088,19 +2057,17 @@ function calcStampCounts(b) {
 }
 
 function renderStampBoards() {
+  const el = document.getElementById('home-stamps');
+  if (!el) return;
+
   const boards = getStampBoards();
   boards.forEach(b => recalcStampCount(b));
 
-  const allDone = boards.length === 0 || boards.every(b => b.currentCount >= b.totalSlots);
-  let html = '';
-
-
   if (boards.length === 0) {
-    document.getElementById('stamp-boards-list').innerHTML = html;
+    el.innerHTML = `<div style="color:var(--text3);font-size:13px;text-align:center;padding:8px;">도장판이 없습니다</div>`;
     return;
   }
 
-  // 카드 배열 생성 (join 전 배열 유지)
   const cardArr = boards.map(b => {
     const total      = b.totalSlots;
     const paused     = !!b.paused;
@@ -2122,6 +2089,24 @@ function renderStampBoards() {
     const marker3 = (3 / total * 100).toFixed(2);
     const marker6 = (6 / total * 100).toFixed(2);
 
+    // 도트 스탬프
+    let dots = '';
+    for (let i = 1; i <= total; i++) {
+      const filled    = i <= cur;
+      const scheduled = i > cur && i <= final;
+      const ms = (b.milestones||[]).find(m => m.at === i);
+      const msLabel = ms ? (i === 3 ? '할인' : i === 6 ? '사진' : '') : '';
+      dots += `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="width:32px;height:32px;border-radius:50%;
+          background:${filled ? 'transparent' : scheduled ? 'rgba(192,57,43,0.08)' : 'var(--bg3)'};
+          border:2px solid ${filled ? 'var(--accent)' : scheduled ? 'var(--accent)' : 'var(--border)'};
+          display:flex;align-items:center;justify-content:center;font-size:16px;">
+          ${filled ? '🎭' : ''}
+        </div>
+        <div style="font-size:8px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};">${msLabel||'.'}</div>
+      </div>`;
+    }
+
     return `<div class="stamp-board${paused ? ' paused' : ''}">
       <div class="stamp-board-header">
         <div class="stamp-board-name">[🎭 ${b.name}]</div>
@@ -2131,6 +2116,7 @@ function renderStampBoards() {
           <button class="stamp-menu-btn danger" onclick="deleteStampBoard('${b.id}')" title="삭제">✕</button>
         </div>
       </div>
+      <div style="display:flex;gap:4px;justify-content:center;margin:10px 0 4px;">${dots}</div>
       <div class="stamp-count-row">
         <span class="stamp-count-cur">현재 ${cur}칸</span>
         <span class="stamp-count-final">/ 최종 ${final}칸</span>
@@ -2144,26 +2130,22 @@ function renderStampBoards() {
         </div>
       </div>
       ${statusHtml}
-      <div class="stamp-actions">
-        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="width:100%;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : ''}
-        <button class="stamp-history-btn" onclick="openStampHistory('${b.id}')">이력 보기</button>
+      <div class="stamp-actions" style="display:flex;gap:6px;">
+        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : '<div style="flex:1;"></div>'}
+        <button class="stamp-history-btn" style="flex:1;" onclick="openStampHistory('${b.id}')">이력 보기</button>
       </div>
     </div>`;
   });
 
-  // 2개씩 페이지로 묶어 좌우 스와이프 (1페이지면 그냥 그리드)
-  const pages = [];
-  for (let i = 0; i < cardArr.length; i += 2) pages.push(cardArr.slice(i, i + 2));
-
-  if (pages.length <= 1) {
-    html += `<div class="stamp-cards-grid">${cardArr.join('')}</div>`;
+  // 1개씩 좌우 스와이프
+  if (boards.length === 1) {
+    el.innerHTML = cardArr[0];
   } else {
-    const pageHtml = pages.map(pg =>
-      `<div style="min-width:100%;scroll-snap-align:start;flex-shrink:0;display:grid;grid-template-columns:repeat(2,1fr);gap:8px;box-sizing:border-box;padding:2px 0;">${pg.join('')}</div>`
+    const slideHtml = cardArr.map(card =>
+      `<div style="min-width:100%;scroll-snap-align:start;flex-shrink:0;box-sizing:border-box;">${card}</div>`
     ).join('');
-    html += `<div style="overflow-x:auto;scroll-snap-type:x mandatory;display:flex;-webkit-overflow-scrolling:touch;">${pageHtml}</div>`;
+    el.innerHTML = `<div style="overflow-x:auto;scroll-snap-type:x mandatory;display:flex;-webkit-overflow-scrolling:touch;padding-bottom:4px;">${slideHtml}</div>`;
   }
-  document.getElementById('stamp-boards-list').innerHTML = html;
 }
 
 // 이력 패널 — 선택된 도장판 이력을 고정 overlay에 표시
@@ -2703,7 +2685,7 @@ function renderCouponList() {
       + boards.reduce((s,b)=>s+(b.milestones||[]).filter(m=>m.couponKey===item.key&&m.notified).reduce((t,m)=>t+(m.qty||1),0),0);
     const used   = records.filter(r=>(DISCOUNT_COUPON_MAP[r.discountType]||null)===item.key).length
       + (coupons[item.key].history||[]).filter(h=>h.type==='사용').reduce((s,h)=>s+(h.qty||1),0);
-    return `<div class="coupon-card">
+    return `<div class="coupon-card" onclick="openCouponDetail('${item.key}')" style="cursor:pointer;">
       <div class="coupon-card-label">${item.label}</div>
       <div class="coupon-card-sub-row">
         <div class="coupon-card-sub">현재</div>
@@ -2822,6 +2804,90 @@ function deleteCouponHistoryRow(key, originalIdx) {
   saveCoupons(coupons);
   renderCouponList();
   renderHome();
+  showToast('이력이 삭제되었습니다');
+}
+
+let _couponDetailKey = null;
+function openCouponDetail(key) {
+  const item = COUPON_ITEMS.find(i => i.key === key);
+  if (!item) return;
+  _couponDetailKey = key;
+  document.getElementById('coupon-detail-title').textContent = item.label + ' 상세 기록';
+  renderCouponDetailPanel(key);
+  openPanel('overlay-coupon-detail');
+}
+
+function renderCouponDetailPanel(key) {
+  const item = COUPON_ITEMS.find(i => i.key === key);
+  if (!item) return;
+  const coupons = getCoupons();
+  const boards  = getStampBoards();
+  const records = getRecords();
+  const dow = ['일','월','화','수','목','금','토'];
+  const allRows = [];
+
+  // ① 수동 이력
+  (coupons[key].history || []).forEach((h, idx) => {
+    if (h.type === '복원') return;
+    allRows.push({ ...h, originalIdx: idx, rowType: 'manual' });
+  });
+  // ② 도장 달성 보상
+  boards.forEach(b => {
+    (b.milestones || []).forEach(m => {
+      if (!m.notified || m.couponKey !== key) return;
+      const date = getStampAchievedDate(b, m.at);
+      allRows.push({ date, type: '획득', comment: `[🎫 ${b.name}] ${m.at}칸 달성`, isMilestone: true, qty: 1, originalIdx: -1, rowType: 'milestone' });
+    });
+  });
+  // ③ 관람 기록 할인권 사용
+  records.forEach(r => {
+    if ((DISCOUNT_COUPON_MAP[r.discountType] || null) !== key) return;
+    allRows.push({ date: r.date, type: '사용', comment: `${r.melas} · ${r.agato} · ${r.pyron||''} 관람`, qty: 1, originalIdx: -1, rowType: 'record' });
+  });
+  allRows.sort((a, b2) => a.date.localeCompare(b2.date));
+
+  const el = document.getElementById('coupon-detail-content');
+  if (!allRows.length) {
+    el.innerHTML = '<div style="color:var(--text3);font-size:13px;padding:20px;text-align:center;">이력 없음</div>';
+    return;
+  }
+  el.innerHTML = '<div class="history-list">' + allRows.map(h => {
+    const d = new Date(h.date + 'T00:00:00');
+    const dateStr = `${h.date.slice(5).replace('-','.')}(${dow[d.getDay()]})`;
+    const isGet = h.type === '획득';
+    const typeHtml = isGet
+      ? `<span class="hist-type-get">획득</span>`
+      : `<span class="hist-type-use">사용</span>`;
+    const qty = h.qty || 1;
+    const deltaHtml = isGet
+      ? `<span class="hist-delta-pos">+${qty}</span>`
+      : `<span class="hist-delta-neg">-${qty}</span>`;
+    const milestoneBadge = h.isMilestone ? ` <span class="hist-milestone-badge">달성</span>` : '';
+    const delBtn = h.rowType === 'manual'
+      ? `<button class="btn-icon" style="font-size:12px;color:var(--danger);margin-left:4px;" onclick="deleteCouponDetailItem('${key}',${h.originalIdx})">✕</button>`
+      : '';
+    return `<div class="history-item">
+      <div style="flex:1;">
+        <div style="font-size:12px;color:var(--text2);font-weight:500;">${dateStr}</div>
+        ${h.comment ? `<div style="font-size:11px;color:var(--text3);">${h.comment}${milestoneBadge}</div>` : ''}
+      </div>
+      ${deltaHtml}
+      ${typeHtml}
+      ${delBtn}
+    </div>`;
+  }).join('') + '</div>';
+}
+
+function deleteCouponDetailItem(key, originalIdx) {
+  if (!confirm('이 이력을 삭제하시겠습니까?')) return;
+  const coupons = getCoupons();
+  coupons[key].history.splice(originalIdx, 1);
+  const boards = getStampBoards();
+  coupons[key].count = calcCouponCount(key, coupons, boards);
+  saveCoupons(coupons);
+  renderCouponList();
+  renderHome();
+  renderCouponDetailPanel(key);
   showToast('이력이 삭제되었습니다');
 }
 
