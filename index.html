@@ -264,7 +264,7 @@
   .stamp-history-btn { width: 100%; padding: 6px; border-radius: 7px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 12px; color: var(--text2); font-weight: 500; text-align: center; }
 
   /* 쿠폰 가로 카드 */
-  .coupon-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .coupon-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .coupon-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 12px 8px; text-align: center; }
   .coupon-card-label { font-size: 10px; color: var(--text2); font-weight: 600; height: 24px; display: flex; align-items: center; justify-content: center; line-height: 1.3; margin-bottom: 4px; }
   .coupon-card-sub-row { display: flex; margin-bottom: 2px; }
@@ -806,7 +806,7 @@
         </div>
         <div style="flex:1;text-align:center;background:var(--bg1);border-radius:8px;padding:6px 4px;">
           <div style="font-size:11px;color:var(--text3);margin-bottom:2px;">6회차 달성</div>
-          <div style="font-weight:700;color:var(--text1);font-size:11px;">📸 폴라로이드 사진</div>
+          <div style="font-weight:700;color:var(--text1);font-size:11px;">📸 폴라로이드 교환권</div>
         </div>
       </div>
       <div style="font-size:11px;color:var(--text2);line-height:1.7;">
@@ -888,6 +888,7 @@
       <select class="form-control" id="manual-coupon-key">
         <option value="discount40">40% 할인권</option>
         <option value="discount50">50% 할인권</option>
+        <option value="polaroid">폴라로이드 교환권</option>
       </select>
     </div>
     <div class="form-group">
@@ -954,7 +955,7 @@ function migrateStampBoards(boards) {
       b.milestones = [
         { at: 3, reward: '40% 할인권 ×1', couponKey: 'discount40', qty: 1, notified: b.currentCount >= 3 },
         { at: 3, reward: '50% 할인권 ×1', couponKey: 'discount50', qty: 1, notified: b.currentCount >= 3 },
-        { at: 6, reward: '폴라로이드 사진', couponKey: null,          notified: b.currentCount >= 6 }
+        { at: 6, reward: '폴라로이드 교환권', couponKey: 'polaroid', qty: 1, notified: b.currentCount >= 6 }
       ];
     } else {
       b.milestones.forEach(m => { if (m.qty === undefined) m.qty = 1; });
@@ -970,6 +971,7 @@ function getCoupons() {
   const c = DB.get('coupons', {});
   if (!c.discount40) c.discount40 = { count: 0, history: [] };
   if (!c.discount50) c.discount50 = { count: 0, history: [] };
+  if (!c.polaroid)   c.polaroid   = { count: 0, history: [] };
   return c;
 }
 function saveCoupons(c) { DB.set('coupons', c); }
@@ -1278,7 +1280,7 @@ function saveRecord() {
             if (!newBoard.milestones) newBoard.milestones = [
               { at:3, reward:'40% 할인권 ×1', couponKey:'discount40', qty:1, notified:false },
               { at:3, reward:'50% 할인권 ×1', couponKey:'discount50', qty:1, notified:false },
-              { at:6, reward:'폴라로이드 사진', couponKey:null,          notified:false }
+              { at:6, reward:'폴라로이드 교환권', couponKey:'polaroid', qty:1, notified:false }
             ];
             newBoard.milestones.forEach(m => {
               if (newBoard.currentCount >= m.at && !m.notified) {
@@ -1566,13 +1568,16 @@ function renderHome() {
     }, 0);
     return cur + future;
   }
-  const c40 = calcCouponCount('discount40', coupons, boards, records, todayStr);
-  const c50 = calcCouponCount('discount50', coupons, boards, records, todayStr);
-  const f40 = homeCouponFinal('discount40');
-  const f50 = homeCouponFinal('discount50');
+  const c40  = calcCouponCount('discount40', coupons, boards, records, todayStr);
+  const c50  = calcCouponCount('discount50', coupons, boards, records, todayStr);
+  const cPol = calcCouponCount('polaroid',   coupons, boards, records, todayStr);
+  const f40  = homeCouponFinal('discount40');
+  const f50  = homeCouponFinal('discount50');
+  const fPol = homeCouponFinal('polaroid');
   const homeCouponItems = [
-    { key:'discount40', label:'40% 할인권', cur:c40, final:f40 },
-    { key:'discount50', label:'50% 할인권', cur:c50, final:f50 }
+    { key:'discount40', label:'40% 할인권',    cur:c40,  final:f40  },
+    { key:'discount50', label:'50% 할인권',    cur:c50,  final:f50  },
+    { key:'polaroid',   label:'폴라로이드 교환권', cur:cPol, final:fPol }
   ];
   document.getElementById('home-coupons').innerHTML =
     `<div class="coupon-cards">${homeCouponItems.map(item => {
@@ -2362,7 +2367,7 @@ function saveStampBoard() {
     milestones: [
       { at: 3, reward: '40% 할인권 ×1', couponKey: 'discount40', qty: 1, notified: false },
       { at: 3, reward: '50% 할인권 ×1', couponKey: 'discount50', qty: 1, notified: false },
-      { at: 6, reward: '폴라로이드 사진', couponKey: null,          notified: false }
+      { at: 6, reward: '폴라로이드 교환권', couponKey: 'polaroid', qty: 1, notified: false }
     ],
     currentCount: 0,
     history: []
@@ -2500,7 +2505,7 @@ function applyStampToBoard(boardId, qty, date, historyComment, comment) {
   if (!board.milestones) board.milestones = [
     { at:3, reward:'40% 할인권 ×1', couponKey:'discount40', qty:1, notified:false },
     { at:3, reward:'50% 할인권 ×1', couponKey:'discount50', qty:1, notified:false },
-    { at:6, reward:'폴라로이드 사진', couponKey:null,          notified:false }
+    { at:6, reward:'폴라로이드 교환권', couponKey:'polaroid', qty:1, notified:false }
   ];
   let toastMsg = '도장 ' + actualQty + '개 완료 (' + board.currentCount + '/' + board.totalSlots + ')';
   board.milestones.forEach(m => {
@@ -2615,8 +2620,9 @@ function openAddStampBoardFromRecord() {
 let _couponHistoryKey = '';
 
 const COUPON_ITEMS = [
-  { key:'discount40', label:'40% 할인권', short:'40%' },
-  { key:'discount50', label:'50% 할인권', short:'50%' }
+  { key:'discount40', label:'40% 할인권',    short:'40%' },
+  { key:'discount50', label:'50% 할인권',    short:'50%' },
+  { key:'polaroid',   label:'폴라로이드 교환권', short:'사진' }
 ];
 
 // 도장 달성 보상을 도장판 상태에서 실시간 계산
@@ -2732,7 +2738,7 @@ function renderCouponAllHistory() {
     (b.milestones || []).forEach(m => {
       if (!m.notified) return;
       const key = m.couponKey;
-      if (!key) return; // 쿠폰 미연동 마일스톤 (폴라로이드 등) 스킵
+      if (!key) return;
       const item = COUPON_ITEMS.find(i => i.key === key);
       if (!item) return;
       const date = getStampAchievedDate(b, m.at);
@@ -2775,8 +2781,9 @@ function renderCouponAllHistory() {
       : `<span class="hist-type-use">사용</span>`;
     const qty   = h.qty || 1;
     const delta = isGet ? `<span class="hist-delta-pos">+${qty}</span>` : `<span class="hist-delta-neg">-${qty}</span>`;
-    const d40 = h.key === 'discount40' ? delta : '';
-    const d50 = h.key === 'discount50' ? delta : '';
+    const d40  = h.key === 'discount40' ? delta : '';
+    const d50  = h.key === 'discount50' ? delta : '';
+    const dPol = h.key === 'polaroid'   ? delta : '';
     const milestoneBadge = h.isMilestone ? `<span class="hist-milestone-badge">달성</span>` : '';
     const memo  = `${h.comment || ''}${milestoneBadge}`;
     const delBtn = h.rowType === 'manual'
@@ -2785,7 +2792,7 @@ function renderCouponAllHistory() {
     return `<tr>
       <td style="text-align:left;white-space:nowrap;">${dateStr}</td>
       <td>${typeHtml}</td>
-      <td>${d40}</td><td>${d50}</td>
+      <td>${d40}</td><td>${d50}</td><td>${dPol}</td>
       <td style="text-align:left;color:var(--text2);font-size:11px;">${memo}</td>
       <td>${delBtn}</td>
     </tr>`;
@@ -2793,7 +2800,7 @@ function renderCouponAllHistory() {
 
   el.innerHTML = `<table class="coupon-hist-table">
     <thead><tr>
-      <th style="text-align:center;">날짜</th><th>유형</th><th>40%</th><th>50%</th><th style="text-align:center;">메모</th><th></th>
+      <th style="text-align:center;">날짜</th><th>유형</th><th>40%</th><th>50%</th><th>사진</th><th style="text-align:center;">메모</th><th></th>
     </tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
@@ -2939,7 +2946,7 @@ function migrateData() {
   // (notified 기반 동적 생성 + records 기반 동적 생성 방식으로 전환됐으므로 중복 방지)
   const coupons = getCoupons();
   let changed = false;
-  ['discount40','discount50'].forEach(key => {
+  ['discount40','discount50','polaroid'].forEach(key => {
     if (!coupons[key]?.history) return;
     const before = coupons[key].history.length;
     coupons[key].history = coupons[key].history.filter(h => {
