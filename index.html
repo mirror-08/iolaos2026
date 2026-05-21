@@ -1370,16 +1370,20 @@ function iolaosSeatMax(zone) {
 }
 
 function buildMiniSeat(zone, row, num) {
-  const maxSeat = iolaosSeatMax(zone);
-  if (!maxSeat) return '';
-  let html = '<div style="overflow-x:auto;margin:8px 0;display:flex;justify-content:center;"><div style="display:flex;flex-direction:column;gap:2px;width:max-content;">';
-  html += '<div style="display:flex;gap:2px;align-items:center;">';
-  html += `<div style="width:22px;text-align:right;font-size:8px;color:var(--accent);padding-right:3px;">${zone}열</div>`;
-  for (let n = 1; n <= maxSeat; n++) {
-    const hl = n === parseInt(num);
-    html += `<div style="width:10px;height:10px;border-radius:2px;flex-shrink:0;background:${hl ? 'var(--accent)' : 'var(--bg3)'};border:1px solid ${hl ? 'var(--accent)' : 'var(--border)'};${hl ? 'box-shadow:0 0 4px var(--accent);' : ''}"></div>`;
-  }
-  html += '</div>';
+  if (!zone || !num) return '';
+  const targetNum = parseInt(num);
+  let html = '<div style="overflow-x:auto;margin:8px 0;"><div style="display:inline-flex;flex-direction:column;gap:2px;">';
+  ['A','B','C','D','E','F','G','H','I','J'].forEach(r => {
+    const maxSeat = iolaosSeatMax(r);
+    const isTarget = r === zone;
+    html += '<div style="display:flex;gap:2px;align-items:center;">';
+    html += `<div style="width:22px;text-align:right;font-size:8px;padding-right:3px;color:${isTarget ? 'var(--accent)' : 'var(--text3)'};font-weight:${isTarget ? '700' : '400'};">${r}열</div>`;
+    for (let n = 1; n <= maxSeat; n++) {
+      const hl = isTarget && n === targetNum;
+      html += `<div style="width:10px;height:10px;border-radius:2px;flex-shrink:0;background:${hl ? 'var(--accent)' : 'var(--bg3)'};border:1px solid ${hl ? 'var(--accent)' : 'var(--border)'};${hl ? 'box-shadow:0 0 4px var(--accent);' : ''}"></div>`;
+    }
+    html += '</div>';
+  });
   return html + '</div></div>';
 }
 
