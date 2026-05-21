@@ -241,27 +241,31 @@
 
   /* STAMP / COUPON */
   .stamp-cards-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-  .stamp-board { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; transition: opacity 0.2s; }
+  .stamp-board { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; transition: opacity 0.2s; }
   .stamp-board.paused { opacity: 0.45; }
-  .stamp-board-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
-  .stamp-board-name { font-weight: 700; font-size: 11px; flex: 1; min-width: 0; }
-  .stamp-board-menu { display: flex; gap: 2px; align-items: center; flex-shrink: 0; margin-left: 4px; }
-  .stamp-menu-btn { width: 20px; height: 20px; border-radius: 5px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--text2); line-height: 1; }
+  .stamp-board-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .stamp-board-name { font-weight: 700; font-size: 13px; flex: 1; min-width: 0; }
+  .stamp-board-menu { display: flex; gap: 3px; align-items: center; flex-shrink: 0; margin-left: 4px; }
+  .stamp-menu-btn { width: 24px; height: 24px; border-radius: 6px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--text2); line-height: 1; }
   .stamp-menu-btn.danger { color: var(--danger); }
-  .stamp-progress-wrap { margin: 3px 0 2px; }
   .stamp-count-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
   .stamp-count-cur { font-size: 12px; font-weight: 700; color: var(--accent); }
   .stamp-count-final { font-size: 10px; color: var(--text3); }
-  .progress-bar { width: 100%; height: 10px; background: var(--bg3); border-radius: 5px; overflow: visible; position: relative; }
-  .progress-fill { height: 100%; background: var(--accent); border-radius: 5px; transition: width 0.4s ease; }
-  .progress-marker { position: absolute; top: -3px; width: 2px; height: 16px; background: var(--star); border-radius: 1px; }
-  .stamp-status-row { font-size: 9px; margin-top: 3px; min-height: 12px; }
+  /* 스탬프 서클 */
+  .stamp-grid { display: flex; gap: 5px; justify-content: center; padding: 6px 0 0; }
+  .stamp-grid-row { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .stamp-slot { width: 36px; height: 36px; border-radius: 50%; border: 2.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 18px; background: var(--bg3); flex-shrink: 0; transition: border-color 0.2s, background 0.2s; }
+  .stamp-slot.stamped { background: transparent; border-color: var(--accent); }
+  .stamp-slot.ms3 { border-color: var(--accent); }
+  .stamp-slot.ms6 { border-color: var(--accent); }
+  .stamp-ms-label { font-size: 7px; font-weight: 700; height: 11px; line-height: 11px; color: var(--accent); }
+  .stamp-status-row { font-size: 11px; margin-top: 4px; min-height: 15px; }
   .stamp-status-mid  { color: #e06000; font-weight: 600; }
-  .stamp-status-done { color: var(--star); font-weight: 700; font-size: 13px; margin-top: 6px; }
+  .stamp-status-done { color: var(--star); font-weight: 700; }
   .stamp-status-next { color: var(--text3); }
   .stamp-status-paused { color: var(--text3); font-style: italic; }
-  .stamp-actions { margin-top: 6px; display: flex; gap: 6px; }
-  .stamp-history-btn { flex: 1; padding: 6px; border-radius: 7px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 11px; color: var(--text2); font-weight: 500; text-align: center; }
+  .stamp-actions { margin-top: 7px; display: flex; gap: 5px; }
+  .stamp-history-btn { flex: 1; padding: 5px 4px; border-radius: 7px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 11px; color: var(--text2); font-weight: 500; text-align: center; }
 
   /* 쿠폰 가로 카드 */
   .coupon-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -2060,23 +2064,24 @@ function renderStampBoards() {
     else if (mid3done)        statusHtml = `<div class="stamp-status-row stamp-status-mid">🏷 40%+50% 할인권 달성!</div>`;
     else if (toNext !== null) statusHtml = `<div class="stamp-status-row stamp-status-next">다음까지 ${toNext}개</div>`;
 
-    // 도트 스탬프
-    let dots = '';
-    for (let i = 1; i <= total; i++) {
-      const filled    = i <= cur;
-      const scheduled = i > cur && i <= final;
-      const ms = (b.milestones||[]).find(m => m.at === i);
-      const msLabel = ms ? (i === 3 ? '40%/50%' : i === 6 ? '폴라로이드' : '') : '';
-      dots += `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-        <div style="width:36px;height:36px;border-radius:50%;
-          background:${filled ? 'transparent' : scheduled ? 'rgba(192,57,43,0.08)' : 'var(--bg3)'};
-          border:2px solid ${filled ? 'var(--accent)' : scheduled ? 'var(--accent)' : 'var(--border)'};
-          display:flex;align-items:center;justify-content:center;font-size:18px;">
-          ${filled ? '🎭' : ''}
-        </div>
-        <div style="font-size:7px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};white-space:nowrap;">${msLabel||'.'}</div>
-      </div>`;
-    }
+    // 스탬프 서클
+    const stampsHtml = Array.from({length: total}, (_, i) => {
+      const slotNum = i + 1;
+      const stamped = slotNum <= cur;
+      const isMs3   = slotNum === 3;
+      const isMs6   = slotNum === 6;
+      let cls = 'stamp-slot';
+      if (stamped)    cls += ' stamped';
+      else if (isMs3) cls += ' ms3';
+      else if (isMs6) cls += ' ms6';
+      const icon = stamped ? '🎭' : '';
+      const msLabel = isMs3
+        ? `<div class="stamp-ms-label">40%/50%</div>`
+        : isMs6
+          ? `<div class="stamp-ms-label">폴라로이드</div>`
+          : `<div class="stamp-ms-label"></div>`;
+      return `<div class="stamp-grid-row"><div class="${cls}">${icon}</div>${msLabel}</div>`;
+    }).join('');
 
     return `<div class="stamp-board${paused ? ' paused' : ''}">
       <div class="stamp-board-header">
@@ -2091,10 +2096,10 @@ function renderStampBoards() {
         <span class="stamp-count-cur">현재 ${cur}칸</span>
         <span class="stamp-count-final">/ 최종 ${final}칸</span>
       </div>
-      <div style="display:flex;gap:4px;justify-content:center;margin:8px 0 4px;">${dots}</div>
+      <div class="stamp-grid">${stampsHtml}</div>
       ${statusHtml}
       <div class="stamp-actions">
-        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;padding:5px 6px;font-size:11px;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : ''}
+        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;font-size:11px;padding:5px 4px;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : ''}
         <button class="stamp-history-btn" onclick="openStampHistory('${b.id}')">이력 보기</button>
       </div>
     </div>`;
