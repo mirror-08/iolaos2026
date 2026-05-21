@@ -2094,7 +2094,7 @@ function renderStampBoards() {
       <div style="display:flex;gap:4px;justify-content:center;margin:8px 0 4px;">${dots}</div>
       ${statusHtml}
       <div class="stamp-actions">
-        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;padding:5px 6px;font-size:11px;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : '<div style="flex:1;"></div>'}
+        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;padding:5px 6px;font-size:11px;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : ''}
         <button class="stamp-history-btn" onclick="openStampHistory('${b.id}')">이력 보기</button>
       </div>
     </div>`;
