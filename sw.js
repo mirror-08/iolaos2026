@@ -1,4 +1,4 @@
-const CACHE_NAME = 'iolaos2026-v1';
+const CACHE_NAME = 'iolaos2026-v2';
 const BASE = '/iolaos2026';
 const ASSETS = [
   BASE + '/',
@@ -13,7 +13,16 @@ const ASSETS = [
 self.addEventListener('install', e => {
   self.skipWaiting();
   e.waitUntil(
-    caches.open(CACHE_NAME).then(c => c.addAll(ASSETS).catch(() => {}))
+    caches.open(CACHE_NAME).then(c =>
+      // cache:'reload' 로 HTTP 캐시 우회 → 항상 최신 파일을 저장
+      Promise.all(
+        ASSETS.map(url =>
+          fetch(new Request(url, { cache: 'reload' }))
+            .then(res => { if (res.ok) c.put(url, res); })
+            .catch(() => {})
+        )
+      )
+    )
   );
 });
 
@@ -21,7 +30,7 @@ self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
+    ).then(() => self.clients.claim())   // 열려있는 모든 탭에 즉시 적용
   );
 });
 
