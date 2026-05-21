@@ -56,20 +56,20 @@
   .tab-btn .icon { font-size: 20px; }
 
   /* PAGES */
-  .page { display: none; padding: 16px 16px 8px; }
+  .page { display: none; padding: 10px 12px 6px; }
   .page.active { display: block; }
 
   /* HEADER */
-  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-  .page-title { font-size: 22px; font-weight: 700; }
+  .page-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .page-title { font-size: 20px; font-weight: 700; }
 
   /* CARD */
   .card {
     background: var(--bg2); border-radius: var(--radius);
-    padding: 16px; margin-bottom: 12px;
+    padding: 10px 12px; margin-bottom: 8px;
     box-shadow: var(--shadow); border: 1px solid var(--border);
   }
-  .card-title { font-size: 13px; color: var(--text3); margin-bottom: 8px; font-weight: 500; }
+  .card-title { font-size: 12px; color: var(--text3); margin-bottom: 5px; font-weight: 500; }
 
   /* BUTTONS */
   .btn { padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer; font-size: 14px; font-weight: 600; transition: opacity 0.2s; }
@@ -128,11 +128,11 @@
   .toggle.on::after { transform: translateX(22px); }
 
   /* RECORD LIST */
-  .record-mini { display: flex; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--border); cursor: pointer; gap: 10px; }
+  .record-mini { display: flex; align-items: center; padding: 5px 0; border-bottom: 1px solid var(--border); cursor: pointer; gap: 8px; }
   .record-mini:last-child { border-bottom: none; }
-  .record-date-badge { background: var(--accent-light); color: var(--accent); border-radius: 8px; padding: 3px 8px; font-size: 12px; font-weight: 600; min-width: 60px; text-align: center; }
-  .record-casting { font-size: 13px; font-weight: 500; flex: 1; }
-  .record-rating { color: var(--star); font-size: 12px; }
+  .record-date-badge { background: var(--accent-light); color: var(--accent); border-radius: 7px; padding: 2px 6px; font-size: 11px; font-weight: 600; min-width: 52px; text-align: center; }
+  .record-casting { font-size: 11px; font-weight: 500; flex: 1; }
+  .record-rating { color: var(--star); font-size: 11px; }
 
   /* CALENDAR */
   .cal-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -250,8 +250,8 @@
   .stamp-menu-btn.danger { color: var(--danger); }
   .stamp-progress-wrap { margin: 3px 0 2px; }
   .stamp-count-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
-  .stamp-count-cur { font-size: 10px; font-weight: 700; color: var(--accent); }
-  .stamp-count-final { font-size: 9px; color: var(--text3); }
+  .stamp-count-cur { font-size: 12px; font-weight: 700; color: var(--accent); }
+  .stamp-count-final { font-size: 10px; color: var(--text3); }
   .progress-bar { width: 100%; height: 10px; background: var(--bg3); border-radius: 5px; overflow: visible; position: relative; }
   .progress-fill { height: 100%; background: var(--accent); border-radius: 5px; transition: width 0.4s ease; }
   .progress-marker { position: absolute; top: -3px; width: 2px; height: 16px; background: var(--star); border-radius: 1px; }
@@ -260,8 +260,8 @@
   .stamp-status-done { color: var(--star); font-weight: 700; }
   .stamp-status-next { color: var(--text3); }
   .stamp-status-paused { color: var(--text3); font-style: italic; }
-  .stamp-actions { margin-top: 5px; display: flex; gap: 5px; }
-  .stamp-history-btn { flex: 1; padding: 4px; border-radius: 6px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 10px; color: var(--text2); font-weight: 500; text-align: center; }
+  .stamp-actions { margin-top: 6px; display: flex; gap: 6px; }
+  .stamp-history-btn { flex: 1; padding: 6px; border-radius: 7px; background: var(--bg3); border: 1px solid var(--border); cursor: pointer; font-size: 11px; color: var(--text2); font-weight: 500; text-align: center; }
 
   /* 쿠폰 가로 카드 */
   .coupon-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
@@ -323,24 +323,24 @@
   [data-theme="dark"] .casting-tag.pyron { background: #2a0a3a; color: #bb8fce; }
 
   /* HOME */
-  .next-show-card { background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); border-radius: var(--radius); padding: 18px; margin-bottom: 8px; color: #fff; position: relative; overflow: hidden; cursor: pointer; }
-  .next-show-card::before { content: '🏛️'; position: absolute; right: 16px; top: 12px; font-size: 40px; opacity: 0.15; }
-  .next-show-dday { font-size: 32px; font-weight: 900; letter-spacing: -1px; margin-bottom: 4px; }
+  .next-show-card { background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%); border-radius: var(--radius); padding: 12px 14px; margin-bottom: 6px; color: #fff; position: relative; overflow: hidden; cursor: pointer; }
+  .next-show-card::before { content: '🏛️'; position: absolute; right: 12px; top: 8px; font-size: 32px; opacity: 0.15; }
+  .next-show-dday { font-size: 26px; font-weight: 900; letter-spacing: -1px; margin-bottom: 2px; }
   .next-show-dday.today-dday { color: #ffe066; }
-  .next-show-date { font-size: 13px; opacity: 0.85; margin-bottom: 10px; }
-  .next-show-casting { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
-  .next-show-pill { padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .next-show-date { font-size: 12px; opacity: 0.85; margin-bottom: 6px; }
+  .next-show-casting { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 5px; }
+  .next-show-pill { padding: 3px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
   .next-show-pill.melas { background: rgba(255,255,255,0.25); }
   .next-show-pill.agato { background: rgba(180,240,255,0.3); }
   .next-show-pill.pyron { background: rgba(220,180,255,0.3); }
-  .next-show-seat { font-size: 12px; opacity: 0.75; }
+  .next-show-seat { font-size: 11px; opacity: 0.75; }
 
-  .upcoming-item { display: flex; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--border); cursor: pointer; gap: 10px; }
+  .upcoming-item { display: flex; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border); cursor: pointer; gap: 8px; }
   .upcoming-item:last-child { border-bottom: none; }
-  .upcoming-dday { font-size: 12px; font-weight: 700; color: var(--accent); min-width: 36px; }
-  .upcoming-date { font-size: 12px; color: var(--text2); }
-  .upcoming-cast { font-size: 12px; color: var(--text3); white-space: nowrap; margin-left: auto; }
-  .upcoming-seat { font-size: 11px; color: var(--text3); opacity: 0.75; white-space: nowrap; }
+  .upcoming-dday { font-size: 11px; font-weight: 700; color: var(--accent); min-width: 34px; }
+  .upcoming-date { font-size: 11px; color: var(--text2); }
+  .upcoming-cast { font-size: 11px; color: var(--text3); white-space: nowrap; margin-left: auto; }
+  .upcoming-seat { font-size: 10px; color: var(--text3); opacity: 0.75; white-space: nowrap; }
 
   .home-stamp-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
   .home-stamp-row:last-child { border-bottom: none; }
@@ -410,7 +410,7 @@
   <div class="card">
     <div class="flex-between" style="margin-bottom:10px;">
       <div class="card-title" style="margin:0;">🎟 쿠폰 현황</div>
-      <button class="btn btn-primary btn-sm" onclick="openAddCouponManual()">+ 할인권 추가/차감</button>
+      <button class="btn btn-primary btn-sm" onclick="openAddCouponManual()" style="padding:4px 9px;font-size:11px;">+ 할인권 추가/차감</button>
     </div>
     <div id="home-coupons"></div>
   </div>
@@ -480,32 +480,6 @@
     <div id="cal-wrap"></div>
   </div>
   <div id="cal-day-records"></div>
-</div>
-
-<!-- ========== COUPON / STAMP ========== -->
-<div class="page" id="page-coupon">
-  <div class="page-header">
-    <div class="page-title">쿠폰·도장</div>
-  </div>
-
-  <!-- 쿠폰 현황 -->
-  <div class="card" style="margin-bottom:16px;">
-    <div class="card-title" style="margin-bottom:10px;">쿠폰 현황</div>
-    <div id="coupon-list"></div>
-    <div style="margin-top:8px;font-size:11px;color:var(--text3);text-align:center;">할인권 증정 및 사용 기간: 2026.06.21 ~ 2026.07.12</div>
-  </div>
-
-  <!-- 전체 이력 표 -->
-  <div class="card" style="margin-bottom:16px;">
-    <div class="flex-between" style="margin-bottom:4px;">
-      <div class="card-title" style="margin:0;">할인권 상세 기록</div>
-      <button id="coupon-history-toggle-icon" onclick="toggleCouponHistory()" style="background:none;border:none;cursor:pointer;font-size:12px;color:var(--text3);padding:2px 4px;">▲</button>
-    </div>
-    <div id="coupon-history-wrap">
-      <div id="coupon-all-history" style="margin-top:8px;"></div>
-    </div>
-  </div>
-
 </div>
 
 <!-- ========== STATS ========== -->
@@ -583,7 +557,6 @@
 <nav class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('home',this)"><span class="icon">🏠</span><span>홈</span></button>
   <button class="tab-btn" onclick="switchTab('calendar',this)"><span class="icon">📅</span><span>캘린더</span></button>
-  <button class="tab-btn" onclick="switchTab('coupon',this)"><span class="icon">🎫</span><span>쿠폰</span></button>
   <button class="tab-btn" onclick="switchTab('stats',this)"><span class="icon">😌</span><span>통계</span></button>
   <button class="tab-btn" onclick="switchTab('settings',this)"><span class="icon">⚙️</span><span>설정</span></button>
 </nav>
@@ -1002,7 +975,6 @@ function switchTab(name, btn) {
   if (name==='home')     renderHome();
   if (name==='calendar') renderCalendar();
   if (name==='stats')    renderStats();
-  if (name==='coupon')   renderCoupon();
   if (name==='settings') {
     const savedAt = localStorage.getItem('scheduleUpdatedAt');
     const timeEl  = document.getElementById('schedule-update-time');
@@ -2073,25 +2045,20 @@ function renderStampBoards() {
   }
 
   const cardArr = boards.map(b => {
-    const total      = b.totalSlots;
-    const paused     = !!b.paused;
+    const total    = b.totalSlots;
+    const paused   = !!b.paused;
     const { cur, final } = calcStampCounts(b);
-    const pct        = Math.min(100, Math.round(cur / total * 100));
-    const finalPct   = Math.min(100, Math.round(final / total * 100));
-    const mid3done   = cur >= 3;
-    const alldone    = cur >= total;
+    const mid3done = cur >= 3;
+    const alldone  = cur >= total;
     const milestones = b.milestones || [{ at:3 }, { at:3 }, { at:6 }];
-    const nextMs     = [...milestones].sort((a,b2)=>a.at-b2.at).find(m => cur < m.at);
-    const toNext     = nextMs ? nextMs.at - cur : null;
+    const nextMs   = [...milestones].sort((a,b2)=>a.at-b2.at).find(m => cur < m.at);
+    const toNext   = nextMs ? nextMs.at - cur : null;
 
     let statusHtml = '';
     if (paused)               statusHtml = `<div class="stamp-status-row stamp-status-paused">일시정지 중</div>`;
     else if (alldone)         statusHtml = `<div class="stamp-status-row stamp-status-done">📸 폴라로이드 달성!</div>`;
     else if (mid3done)        statusHtml = `<div class="stamp-status-row stamp-status-mid">🏷 40%+50% 할인권 달성!</div>`;
     else if (toNext !== null) statusHtml = `<div class="stamp-status-row stamp-status-next">다음까지 ${toNext}개</div>`;
-
-    const marker3 = (3 / total * 100).toFixed(2);
-    const marker6 = (6 / total * 100).toFixed(2);
 
     // 도트 스탬프
     let dots = '';
@@ -2101,13 +2068,13 @@ function renderStampBoards() {
       const ms = (b.milestones||[]).find(m => m.at === i);
       const msLabel = ms ? (i === 3 ? '할인' : i === 6 ? '사진' : '') : '';
       dots += `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
-        <div style="width:26px;height:26px;border-radius:50%;
+        <div style="width:36px;height:36px;border-radius:50%;
           background:${filled ? 'transparent' : scheduled ? 'rgba(192,57,43,0.08)' : 'var(--bg3)'};
           border:2px solid ${filled ? 'var(--accent)' : scheduled ? 'var(--accent)' : 'var(--border)'};
-          display:flex;align-items:center;justify-content:center;font-size:13px;">
+          display:flex;align-items:center;justify-content:center;font-size:18px;">
           ${filled ? '🎭' : ''}
         </div>
-        <div style="font-size:7px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};">${msLabel||'.'}</div>
+        <div style="font-size:8px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};">${msLabel||'.'}</div>
       </div>`;
     }
 
@@ -2120,22 +2087,14 @@ function renderStampBoards() {
           <button class="stamp-menu-btn danger" onclick="deleteStampBoard('${b.id}')" title="삭제">✕</button>
         </div>
       </div>
-      <div style="display:flex;gap:3px;justify-content:center;margin:6px 0 3px;">${dots}</div>
       <div class="stamp-count-row">
         <span class="stamp-count-cur">현재 ${cur}칸</span>
         <span class="stamp-count-final">/ 최종 ${final}칸</span>
       </div>
-      <div class="stamp-progress-wrap">
-        <div class="progress-bar" style="overflow:visible;">
-          <div class="progress-fill" style="width:${finalPct}%;background:var(--border);border-radius:6px;"></div>
-          <div class="progress-fill" style="width:${pct}%;background:${paused ? 'var(--text3)' : 'var(--accent)'};border-radius:6px;margin-top:-12px;position:relative;"></div>
-          <div class="progress-marker" style="left:calc(${marker3}% - 1px);"></div>
-          <div class="progress-marker" style="left:calc(${marker6}% - 1px);background:var(--accent);"></div>
-        </div>
-      </div>
+      <div style="display:flex;gap:4px;justify-content:center;margin:8px 0 4px;">${dots}</div>
       ${statusHtml}
       <div class="stamp-actions">
-        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;padding:4px 6px;font-size:10px;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : '<div style="flex:1;"></div>'}
+        ${(!alldone && !paused) ? `<button class="btn btn-primary btn-sm" style="flex:1;padding:5px 6px;font-size:11px;" onclick="openAddStamp('${b.id}')">+ 도장 찍기</button>` : '<div style="flex:1;"></div>'}
         <button class="stamp-history-btn" onclick="openStampHistory('${b.id}')">이력 보기</button>
       </div>
     </div>`;
@@ -2703,7 +2662,8 @@ function renderCouponList() {
     </div>`;
   }).join('')}</div>`;
 
-  document.getElementById('coupon-list').innerHTML = cardsHtml;
+  const clEl = document.getElementById('coupon-list');
+  if (clEl) clEl.innerHTML = cardsHtml;
   renderCouponAllHistory();
 }
 
@@ -3010,7 +2970,6 @@ function refreshCurrentPage() {
   if (id==='page-home')     renderHome();
   if (id==='page-calendar') renderCalendar();
   if (id==='page-stats')    renderStats();
-  if (id==='page-coupon')   renderCoupon();
 }
 
 // ============================================================
