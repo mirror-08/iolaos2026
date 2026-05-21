@@ -1271,7 +1271,7 @@ function saveRecord() {
             newBoard.history.push({
               recordId: editId,
               date,
-              method: `${alex} · ${philo} 관람 연동` + qtyLabel,
+              method: `${melas} · ${agato} · ${pyron} 관람 연동` + qtyLabel,
               comment: '',
               qty: actualQty
             });
@@ -1297,7 +1297,7 @@ function saveRecord() {
   } else {
     records.push(record);
     if (stampBoardId) {
-      const toastMsg = applyStampToBoard(stampBoardId, stampQty, date, `${alex} · ${philo} 관람 연동`);
+      const toastMsg = applyStampToBoard(stampBoardId, stampQty, date, `${melas} · ${agato} · ${pyron} 관람 연동`);
       // 방금 추가된 history에 recordId 심기 (수정 시 정확한 삭제를 위해)
       const boards2 = getStampBoards();
       const board2  = boards2.find(b => b.id === stampBoardId);
@@ -1354,7 +1354,7 @@ function openDetail(id) {
       if (seq === null) seq = board.currentCount;
       const qty = r.stampQty || 1;
       const seqLabel = qty > 1 ? `[${seq}~${seq+qty-1}번째 도장] ×${qty}` : `${seq}번째 도장`;
-      html += `<div class="detail-field"><div class="detail-field-label">다관람 카드</div><div class="detail-field-value">[📡 ${board.name}] ${seqLabel}</div></div>`;
+      html += `<div class="detail-field"><div class="detail-field-label">다관람 카드</div><div class="detail-field-value">[🎭 ${board.name}] ${seqLabel}</div></div>`;
     }
   }
   if (r.memo) html += `<div class="detail-field"><div class="detail-field-label">감상 메모</div><div class="detail-field-value" style="font-size:14px;line-height:1.6;white-space:pre-wrap;">${r.memo}</div></div>`;
