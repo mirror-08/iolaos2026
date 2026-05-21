@@ -2066,7 +2066,7 @@ function renderStampBoards() {
       const filled    = i <= cur;
       const scheduled = i > cur && i <= final;
       const ms = (b.milestones||[]).find(m => m.at === i);
-      const msLabel = ms ? (i === 3 ? '할인' : i === 6 ? '사진' : '') : '';
+      const msLabel = ms ? (i === 3 ? '40%/50%' : i === 6 ? '폴라로이드' : '') : '';
       dots += `<div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
         <div style="width:36px;height:36px;border-radius:50%;
           background:${filled ? 'transparent' : scheduled ? 'rgba(192,57,43,0.08)' : 'var(--bg3)'};
@@ -2074,7 +2074,7 @@ function renderStampBoards() {
           display:flex;align-items:center;justify-content:center;font-size:18px;">
           ${filled ? '🎭' : ''}
         </div>
-        <div style="font-size:8px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};">${msLabel||'.'}</div>
+        <div style="font-size:7px;font-weight:700;color:${msLabel ? 'var(--accent)' : 'transparent'};white-space:nowrap;">${msLabel||'.'}</div>
       </div>`;
     }
 
