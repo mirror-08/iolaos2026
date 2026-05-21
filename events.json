@@ -1,0 +1,6 @@
+[
+  { "startDate": "2026-06-21", "endDate": "2026-06-21", "name": "무대인사",    "color": "#1a8fea" },
+  { "startDate": "2026-06-23", "endDate": "2026-06-24", "name": "무대인사",    "color": "#1a8fea" },
+  { "startDate": "2026-06-30", "endDate": "2026-07-05", "name": "커튼콜 데이", "color": "#9c27b0" },
+  { "startDate": "2026-07-07", "endDate": "2026-07-12", "name": "트리플 적립", "color": "#e65100" }
+]
