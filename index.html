@@ -2404,6 +2404,12 @@ function updateStampSessionOptions() {
   const date      = document.getElementById('stamp-date')?.value;
   const group     = document.getElementById('stamp-session-group');
   const container = document.getElementById('stamp-session-options');
+  // 방식에 따라 수량 자동 설정
+  const autoQtyMap = { '더블적립': '2', '트리플적립': '3', '직접 관람': '1', '교환': '1' };
+  if (autoQtyMap[method]) {
+    const qtyEl = document.querySelector(`input[name="stamp-qty"][value="${autoQtyMap[method]}"]`);
+    if (qtyEl) { qtyEl.checked = true; updateQtyLabel(); }
+  }
   // 교환 방식 메모 표시
   const exchangeMemoGroup = document.getElementById('stamp-exchange-memo-group');
   if (exchangeMemoGroup) exchangeMemoGroup.style.display = method === '교환' ? '' : 'none';
