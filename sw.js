@@ -1,4 +1,4 @@
-const CACHE_NAME = 'iolaos2026-v2';
+const CACHE_NAME = 'iolaos2026-v3';
 const BASE = '/iolaos2026';
 const ASSETS = [
   BASE + '/',
