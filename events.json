@@ -2,5 +2,9 @@
   { "startDate": "2026-06-21", "endDate": "2026-06-21", "name": "무대인사",    "color": "#1a8fea" },
   { "startDate": "2026-06-23", "endDate": "2026-06-24", "name": "무대인사",    "color": "#1a8fea" },
   { "startDate": "2026-06-30", "endDate": "2026-07-05", "name": "커튼콜 데이", "color": "#9c27b0" },
-  { "startDate": "2026-07-07", "endDate": "2026-07-12", "name": "트리플 적립", "color": "#e65100" }
+  { "startDate": "2026-07-07", "endDate": "2026-07-12", "name": "트리플 적립", "color": "#e65100" },
+  { "startDate": "2026-07-14", "endDate": "2026-07-19", "name": "장면 시연 위크", "color": "#3949ab" },
+  { "startDate": "2026-07-21", "endDate": "2026-07-26", "name": "보이스 카드 증정", "color": "#00897b" },
+  { "startDate": "2026-07-28", "endDate": "2026-08-02", "name": "엽서 증정", "color": "#d81b60" },
+  { "startDate": "2026-07-31", "endDate": "2026-08-02", "name": "관객과의 대화", "color": "#43a047" }
 ]
