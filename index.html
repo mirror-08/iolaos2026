@@ -1815,8 +1815,12 @@ function renderCalDayPanel(ds, daySch, doneSet, bookedSet, records) {
   const d    = new Date(ds+'T00:00:00');
   const dateLabel = `${parseInt(ds.slice(5,7))}월 ${parseInt(ds.slice(8,10))}일 (${dow[d.getDay()]})`;
   const dayRecords = records.filter(r => r.date === ds);
+  const dayEvents  = getEventsForDate(ds, getEvents());
+  const eventBadges = dayEvents.map(ev =>
+    `<span style="display:inline-block;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;background:${ev.color}22;color:${ev.color};border:1px solid ${ev.color}55;">${ev.name}</span>`
+  ).join('');
 
-  let html = `<div class="cal-day-panel"><div class="cal-day-panel-title">${dateLabel}</div>`;
+  let html = `<div class="cal-day-panel"><div class="cal-day-panel-title" style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">${dateLabel}${eventBadges}</div>`;
 
   const sorted = [...daySch].sort((a,b) => a.time.localeCompare(b.time));
   if (sorted.length) {
